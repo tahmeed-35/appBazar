@@ -6,6 +6,7 @@ import appErrorImg from "../assets/App-Error.png";
 function Apps() {
   const { appsPromise } = useLoaderData();
   const [search, setSearch] = useState("");
+  const [sortOrder, setSortOrder] = useState("");
 
   const formatDownloads = (num) => {
     if (num >= 1000000000) return (num / 1000000000).toFixed(1) + 'B';
@@ -24,16 +25,34 @@ function Apps() {
         <Suspense fallback={<LoadingFallback />}>
           <Await resolve={appsPromise}>
             {(apps) => {
-              const filteredApps = apps.filter(app => app.title.toLowerCase().includes(search.toLowerCase()));
+              let filteredApps = apps.filter(app => app.title.toLowerCase().includes(search.toLowerCase()));
+              
+              if (sortOrder === "high-low") {
+                filteredApps.sort((a, b) => b.downloads - a.downloads);
+              } else if (sortOrder === "low-high") {
+                filteredApps.sort((a, b) => a.downloads - b.downloads);
+              }
+
               return (
                 <>
                   <div className="flex flex-col sm:flex-row justify-between items-center mb-8 gap-4 border-b border-gray-200 pb-4">
                     <h2 className="font-bold text-slate-800 text-lg">({filteredApps.length}) Apps Found</h2>
-                    <div className="form-control w-full sm:w-auto">
-                      <label className="input input-bordered shadow-sm flex items-center gap-2 bg-white h-10 px-3 w-full sm:w-64">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" className="w-4 h-4 opacity-50"><path fillRule="evenodd" d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z" clipRule="evenodd" /></svg>
-                        <input type="text" className="grow text-sm" placeholder="search Apps" value={search} onChange={(e) => setSearch(e.target.value)} />
-                      </label>
+                    <div className="flex flex-col sm:flex-row w-full sm:w-auto gap-4">
+                      <select 
+                        className="select select-bordered shadow-sm bg-white h-10 min-h-10 px-3 w-full sm:w-48 text-sm focus:outline-none"
+                        value={sortOrder}
+                        onChange={(e) => setSortOrder(e.target.value)}
+                      >
+                        <option value="" disabled>Sort By Downloads</option>
+                        <option value="high-low">High-Low</option>
+                        <option value="low-high">Low-High</option>
+                      </select>
+                      <div className="form-control w-full sm:w-auto">
+                        <label className="input input-bordered shadow-sm flex items-center gap-2 bg-white h-10 px-3 w-full sm:w-64">
+                          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" className="w-4 h-4 opacity-50"><path fillRule="evenodd" d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z" clipRule="evenodd" /></svg>
+                          <input type="text" className="grow text-sm" placeholder="search Apps" value={search} onChange={(e) => setSearch(e.target.value)} />
+                        </label>
+                      </div>
                     </div>
                   </div>
 
