@@ -1,6 +1,7 @@
 import React, { useState, Suspense } from "react";
-import { useLoaderData, Await } from "react-router";
+import { useLoaderData, Await, Link } from "react-router";
 import { LoadingFallback } from "../components/LoadingFallback";
+import appErrorImg from "../assets/App-Error.png";
 
 function Apps() {
   const { appsPromise } = useLoaderData();
@@ -36,26 +37,34 @@ function Apps() {
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 w-full">
-                    {filteredApps.map((app) => (
-                      <Link to={`/app/${app.id}`} key={app.id} className="card bg-white shadow-sm border border-gray-100 p-4 text-left rounded-xl hover:shadow-md transition-shadow cursor-pointer block">
-                        <div className="bg-gray-100 h-[220px] w-full rounded-lg mb-4 flex items-center justify-center overflow-hidden">
-                           <img src={app.image} alt={app.title} className="max-h-full max-w-full object-contain p-4" />
-                        </div>
-                        <h3 className="font-bold text-sm truncate mb-1">{app.title}</h3>
-                        <p className="text-xs text-gray-500 mb-3 truncate">{app.companyName}</p>
-                        <div className="flex justify-between items-center text-xs">
-                          <span className="bg-green-100 text-green-600 px-2 py-1 rounded font-semibold flex items-center gap-1">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
-                            {formatDownloads(app.downloads)}
-                          </span>
-                          <span className="bg-yellow-50 text-orange-500 px-2 py-1 rounded font-bold flex items-center gap-1">
-                            ★ {app.ratingAvg}
-                          </span>
-                        </div>
-                      </Link>
-                    ))}
-                  </div>
+                  {filteredApps.length > 0 ? (
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 w-full">
+                      {filteredApps.map((app) => (
+                        <Link to={`/app/${app.id}`} key={app.id} className="card bg-white shadow-sm border border-gray-100 p-4 text-left rounded-xl hover:shadow-md transition-shadow cursor-pointer block">
+                          <div className="bg-gray-100 h-[220px] w-full rounded-lg mb-4 flex items-center justify-center overflow-hidden">
+                             <img src={app.image} alt={app.title} className="max-h-full max-w-full object-contain p-4" />
+                          </div>
+                          <h3 className="font-bold text-sm truncate mb-1">{app.title}</h3>
+                          <p className="text-xs text-gray-500 mb-3 truncate">{app.companyName}</p>
+                          <div className="flex justify-between items-center text-xs">
+                            <span className="bg-green-100 text-green-600 px-2 py-1 rounded font-semibold flex items-center gap-1">
+                              <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                              {formatDownloads(app.downloads)}
+                            </span>
+                            <span className="bg-yellow-50 text-orange-500 px-2 py-1 rounded font-bold flex items-center gap-1">
+                              ★ {app.ratingAvg}
+                            </span>
+                          </div>
+                        </Link>
+                      ))}
+                    </div>
+                  ) : (
+                    <div className="flex flex-col items-center justify-center py-10 text-center w-full">
+                      <img src={appErrorImg} alt="No Apps Found" className="max-w-xs w-full mb-8 drop-shadow-sm" />
+                      <h2 className="text-2xl font-bold text-slate-800 mb-2">No apps found</h2>
+                      <p className="text-slate-500">We couldn't find any applications matching your search.</p>
+                    </div>
+                  )}
                 </>
               )
             }}

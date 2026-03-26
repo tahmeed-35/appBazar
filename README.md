@@ -1,16 +1,28 @@
-# React + Vite
+# appBazar 🚀
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Hello guys!! This is my first major React assignment where I built an app downloading store called appBazar. You can scroll through apps, search for an app, see the ratings, and "install" them to your device memory!
 
-Currently, two official plugins are available:
+## Features ✨
+- Awesome Homepage with big headers and stats
+- Trending apps list pulling from my own mock data (app-data.json)
+- Full routing with React Router latest v7 !
+- Search for any apps in the Apps page (it's case insensitive so you can type whatever) and if no apps are found it shows a cool Custom Error image
+- Complete details page for every single app!
+- **Recharts** used to visually show the stars and ratings distribution! 📊
+- Install button saves your downloaded apps in **localStorage** so they stay there forever even if you close the browser
+- You can uninstall the apps directly from the "Installation" tab!
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Tech Used 💻
+- React (Vite environment)
+- Tailwind CSS
+- DaisyUI library
+- React Router v7
+- Recharts
 
-## React Compiler
+## How to run it on your pc?
+1. clone the repo first or download zip
+2. type `npm install` in your vs code terminal to get all the node modules
+3. run `npm run dev` to start the live server!
+4. open the localhost link in your favorite browser!
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+All functionality checked, done Alhamdulillah ❤️

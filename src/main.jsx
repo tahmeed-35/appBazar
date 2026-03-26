@@ -1,7 +1,7 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
-import { createBrowserRouter, RouterProvider, defer } from "react-router";
+import { createBrowserRouter, RouterProvider } from "react-router";
 import Layout from "./components/Layout";
 import Home from "./pages/Home";
 import Apps from "./pages/Apps";
@@ -10,12 +10,12 @@ import ErrorPage from "./pages/ErrorPage";
 import AppDetails from "./pages/AppDetails";
 
 const appsLoader = () => {
-  return defer({
+  return {
     appsPromise: fetch("/app-data.json").then((res) => {
       // Small artificial delay to show nice suspense effect
       return new Promise(resolve => setTimeout(() => resolve(res.json()), 800));
     })
-  });
+  };
 };
 
 import { LoadingFallback } from "./components/LoadingFallback";
