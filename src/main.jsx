@@ -43,6 +43,7 @@ const router = createBrowserRouter([
       {
         path: "/installation",
         element: <Installation />,
+        loader: appsLoader,
       }
     ]
   },
