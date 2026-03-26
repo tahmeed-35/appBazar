@@ -1,7 +1,7 @@
 import React, { Suspense } from "react";
 import { Link, useLoaderData, Await } from "react-router";
 import hero from "../assets/hero.png";
-import { LoadingFallback } from "../main";
+import { LoadingFallback } from "../components/LoadingFallback";
 
 function Home() {
   const { appsPromise } = useLoaderData();
@@ -67,7 +67,7 @@ function Home() {
             {(apps) => (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-[1100px] w-full">
                 {apps.slice(0, 8).map((app) => (
-                  <div key={app.id} className="card bg-white shadow-sm border border-gray-100 p-4 text-left rounded-xl">
+                  <Link to={`/app/${app.id}`} key={app.id} className="card bg-white shadow-sm border border-gray-100 p-4 text-left rounded-xl hover:shadow-md transition-shadow cursor-pointer block">
                     <div className="bg-gray-100 h-[220px] w-full rounded-lg mb-4 flex items-center justify-center overflow-hidden">
                        <img src={app.image} alt={app.title} className="max-h-full max-w-full object-contain p-4" />
                     </div>
@@ -82,7 +82,7 @@ function Home() {
                         ★ {app.ratingAvg}
                       </span>
                     </div>
-                  </div>
+                  </Link>
                 ))}
               </div>
             )}

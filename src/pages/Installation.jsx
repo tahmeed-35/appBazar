@@ -1,10 +1,10 @@
 import React, { useState, Suspense } from "react";
 import { useLoaderData, Await } from "react-router";
-import { LoadingFallback } from "../main";
+import { LoadingFallback } from "../components/LoadingFallback";
 
 function InstalledList({ initialApps }) {
-  // Simulating the user having the first 3 apps installed natively for demonstration
-  const [apps, setApps] = useState(initialApps.slice(0, 3));
+  const storedIds = JSON.parse(localStorage.getItem("installedApps")) || [];
+  const [apps, setApps] = useState(initialApps.filter(app => storedIds.includes(app.id)));
   const [sortOrder, setSortOrder] = useState("");
 
   const handleSort = (e) => {
@@ -18,7 +18,9 @@ function InstalledList({ initialApps }) {
   };
 
   const handleUninstall = (id) => {
-    setApps(apps.filter(app => app.id !== id));
+    const updatedApps = apps.filter(app => app.id !== id);
+    setApps(updatedApps);
+    localStorage.setItem("installedApps", JSON.stringify(updatedApps.map(a => a.id)));
   };
 
   const formatDownloads = (num) => {

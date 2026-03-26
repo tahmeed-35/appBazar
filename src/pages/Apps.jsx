@@ -1,6 +1,6 @@
 import React, { useState, Suspense } from "react";
 import { useLoaderData, Await } from "react-router";
-import { LoadingFallback } from "../main";
+import { LoadingFallback } from "../components/LoadingFallback";
 
 function Apps() {
   const { appsPromise } = useLoaderData();
@@ -38,7 +38,7 @@ function Apps() {
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 w-full">
                     {filteredApps.map((app) => (
-                      <div key={app.id} className="card bg-white shadow-sm border border-gray-100 p-4 text-left rounded-xl">
+                      <Link to={`/app/${app.id}`} key={app.id} className="card bg-white shadow-sm border border-gray-100 p-4 text-left rounded-xl hover:shadow-md transition-shadow cursor-pointer block">
                         <div className="bg-gray-100 h-[220px] w-full rounded-lg mb-4 flex items-center justify-center overflow-hidden">
                            <img src={app.image} alt={app.title} className="max-h-full max-w-full object-contain p-4" />
                         </div>
@@ -53,7 +53,7 @@ function Apps() {
                             ★ {app.ratingAvg}
                           </span>
                         </div>
-                      </div>
+                      </Link>
                     ))}
                   </div>
                 </>
