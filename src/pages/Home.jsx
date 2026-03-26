@@ -1,6 +1,18 @@
+import React, { Suspense } from "react";
+import { Link, useLoaderData, Await } from "react-router";
 import hero from "../assets/hero.png";
+import { LoadingFallback } from "../main";
 
 function Home() {
+  const { appsPromise } = useLoaderData();
+
+  const formatDownloads = (num) => {
+    if (num >= 1000000000) return (num / 1000000000).toFixed(1) + 'B';
+    if (num >= 1000000) return (num / 1000000).toFixed(0) + 'M';
+    if (num >= 1000) return (num / 1000).toFixed(0) + 'k';
+    return num;
+  };
+
   return (
     <div className="text-center pt-10 pb-0 flex flex-col items-center w-full">
       <h1 className="text-4xl md:text-5xl font-bold text-slate-800 mb-4 mt-8">
@@ -50,31 +62,36 @@ function Home() {
         <h2 className="text-3xl font-bold mb-2 text-slate-800">Trending Apps</h2>
         <p className="text-slate-500 mb-10 text-sm">Explore All Trending Apps on the Market developed by us</p>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-[1100px] w-full">
-          {[
-            "Forest: Focus For Productivity",
-            "SmPlan:ToDo List With Reminder",
-            "FLIP - Focus Timer For Study",
-            "Pomocat - Cute Pomodoro Timer",
-            "Time Planner: Schedule & Tasks",
-            "Morning Habits - Daily Routine",
-            "Focus Plant: Pomodoro Forest",
-            "Alarmy - Alarm Clock & Sleep"
-          ].map((title, i) => (
-            <div key={i} className="card bg-white shadow-sm border border-gray-100 p-4 text-left rounded-xl">
-              <div className="bg-gray-200 h-[220px] w-full rounded-lg mb-4"></div>
-              <h3 className="font-bold text-xs truncate mb-2">{title}</h3>
-              <div className="flex justify-between items-center text-xs">
-                <span className="bg-green-100 text-green-600 px-2 py-1 rounded font-semibold">9M</span>
-                <span className="bg-yellow-50 text-orange-500 px-2 py-1 rounded font-bold">★ 5</span>
+        <Suspense fallback={<LoadingFallback />}>
+          <Await resolve={appsPromise}>
+            {(apps) => (
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-[1100px] w-full">
+                {apps.slice(0, 8).map((app) => (
+                  <div key={app.id} className="card bg-white shadow-sm border border-gray-100 p-4 text-left rounded-xl">
+                    <div className="bg-gray-100 h-[220px] w-full rounded-lg mb-4 flex items-center justify-center overflow-hidden">
+                       <img src={app.image} alt={app.title} className="max-h-full max-w-full object-contain p-4" />
+                    </div>
+                    <h3 className="font-bold text-sm truncate mb-1">{app.title}</h3>
+                    <p className="text-xs text-gray-500 mb-3 truncate">{app.companyName}</p>
+                    <div className="flex justify-between items-center text-xs">
+                      <span className="bg-green-100 text-green-600 px-2 py-1 rounded font-semibold flex items-center gap-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                        {formatDownloads(app.downloads)}
+                      </span>
+                      <span className="bg-yellow-50 text-orange-500 px-2 py-1 rounded font-bold flex items-center gap-1">
+                        ★ {app.ratingAvg}
+                      </span>
+                    </div>
+                  </div>
+                ))}
               </div>
-            </div>
-          ))}
-        </div>
+            )}
+          </Await>
+        </Suspense>
 
-        <button className="btn bg-purple-500 hover:bg-purple-600 text-white mt-12 border-0 px-8">
+        <Link to="/apps" className="btn bg-purple-500 hover:bg-purple-600 text-white mt-12 border-0 px-8">
           Show All
-        </button>
+        </Link>
       </div>
     </div>
   )
